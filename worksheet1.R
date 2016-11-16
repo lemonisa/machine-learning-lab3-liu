@@ -6,6 +6,7 @@ library('functional')
 library('magrittr')
 library('reshape2')
 library('MASS')
+library('e1071')
 library('readxl')
 
 crabs <- read.csv('../question/australian-crabs.csv')
@@ -248,4 +249,45 @@ assignment2.34 <- function () {
         misclass.rate(best.tree, credits.test, credits.test$good_bad),
         '\n')
     best.tree
+}
+
+assignment2.5 <- function () {
+    m <- naiveBayes( good_bad ~ ., data = credits.train )
+
+    table.train <-
+        table( predict(m, newdata = credits.train), credits.train$good_bad )
+    table.test <-
+        table( predict(m, newdata = credits.test), credits.test$good_bad )
+
+    cat('Training Naive Bayes:')
+    print(table.train)
+    print(1 - sum(diag(table.train)) / sum(table.train))
+    cat('Testing Naive Bayes:')
+    print(table.test)
+    print(1 - sum(diag(table.test)) / sum(table.test))
+}
+
+
+assignment2.6 <- function () {
+    m <- naiveBayes( good_bad ~ ., data = credits.train )
+    confusion <- function (newdata) {
+        probs <- predict(m, newdata = newdata, type='raw') *
+            matrix(c(rep(1, nrow(newdata)), rep(10, nrow(newdata))) ,ncol = 2)
+        which.bads <- which( probs[,'bad'] > probs[,'good'] )
+        which.goods <- - which.bads
+        pred <- rep(0, nrow(newdata))
+        pred[which.bads] <- 'bad'
+        pred[which.goods] <- 'good'
+        pred %<>% as.factor
+        table( pred, newdata$good_bad )
+    }
+    table.train <- confusion( credits.train )
+    table.test <- confusion( credits.test )
+
+    cat('Training Naive Bayes:')
+    print(table.train)
+    print(1 - sum(diag(table.train)) / sum(table.train))
+    cat('Testing Naive Bayes:')
+    print(table.test)
+    print(1 - sum(diag(table.test)) / sum(table.test))
 }

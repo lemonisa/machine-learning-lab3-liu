@@ -147,8 +147,9 @@ The misclassification rate is as below:\\
   Deviance Train & 0.212 \\
   Deviance Testing & 0.268
 \end{tabular}
-
-Deviance seems to be a better measure of impurity in our data set.
+\\\\\\
+From the above table, deviance seems to be a better measure of impurity in our
+data set.
 
 \subsection*{Solution 2.3}
 According to \autoref{treedepth}, it is reasonable to use tree depth = 4
@@ -165,10 +166,54 @@ The misclassification rate for testing data of this tree is $0.256$.
 
 
 \subsection*{Solution 2.4}
+The confusion matrix of Naive Bayes classification using the training data set
+is as follows:\\\\
+\begin{tabular}{ l | l | l }
+  & bad & good \\
+  \hline
+  bad & 95 & 98 \\
+  good & 52 & 255
+\end{tabular}
+\\\\\\
+Misclassification rate of training data is $0.3$.
+The confusion matrix using the testing data set is as follows:\\\\
+\begin{tabular}{ l | l | l }
+  & bad & good \\
+  \hline
+  bad & 46 & 49 \\
+  good & 30 & 125
+\end{tabular}
+\\\\\\
+Misclassification rate of testing data is $0.316$. The classification is
+significantly worse than that of decision tree.
 
 \subsection*{Solution 2.5}
-
-
+The confusion matrix of Naive Bayes classification with the provided
+custom loss function and the training data set is as follows:\\\\
+\begin{tabular}{ l | l | l }
+  & bad & good \\
+  \hline
+  bad & 27 & 17 \\
+  good & 120 & 336
+\end{tabular}
+\\\\\\
+Misclassification rate of training data is $0.274$.
+The confusion matrix using the testing data set is as follows:\\\\
+\begin{tabular}{ l | l | l }
+  & bad & good \\
+  \hline
+  bad & 14 & 10 \\
+  good & 62 & 164
+\end{tabular}
+\\\\\\
+Misclassification rate of testing data is $0.288$. This classification
+gives better overall misclassification rate, but it is more likely
+misclassify bad loaners as good: it is very conservative. The fact that
+such a conservative criterion gives better overall rate than that using
+normal loss function is due to that the normal loss function is more
+likely misclassify good loaner as bad: the adjustment of loss function
+corrected these bias. Also, most of the customers are good anyway, so
+adjusting the algorithm to guess more 'good' doesn't harm much.
 
 \newpage
 \lstset{
